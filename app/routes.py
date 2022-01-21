@@ -1,6 +1,6 @@
-from app import app 
+from app import app
 from flask import render_template
-
+from datetime import datetime
 
 
 
@@ -15,3 +15,4 @@ def login():
 @app.route('/register')
 def register():
     return render_template('register.html')
+
