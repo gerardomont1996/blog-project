@@ -1,5 +1,3 @@
-
-
 from app import app
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_user
