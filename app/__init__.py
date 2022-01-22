@@ -5,9 +5,9 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 
 app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///social.db'
+app.config.from_object(Config)
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
-from . import routes, models
+from . import routes,models
