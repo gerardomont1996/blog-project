@@ -48,7 +48,7 @@ def login():
             flash('That username and/or password is incorrect', 'danger')
             return redirect(url_for('login'))
         
-       
+
         login_user(user)
         flash('You have succesfully logged in', 'success')
         return redirect(url_for('index'))
