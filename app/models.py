@@ -33,8 +33,9 @@ class Post(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     title=db.Column(db.String(50),nullable=False)
     body=db.Column(db.String(200),nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey ('user.id'), nullable=False)
+    
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+  
 
     def __repr__(self):
         return f"<Post|{self.title}>"
