@@ -10,6 +10,8 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-login = LoginManager
+login = LoginManager(app)
+login.login_view = 'login'
+login.login_message_category= 'danger'
 
 from . import routes,models

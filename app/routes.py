@@ -1,13 +1,14 @@
 from app import app
 from flask import render_template, redirect, url_for, flash
-from flask_login import login_user, logout_user
-from app.forms import RegisterForm, LoginForm
-from app.models import User
+from flask_login import login_user, logout_user, login_required, current_user
+from app.forms import RegisterForm, LoginForm,PostForm
+from app.models import User,Post
 
 
 @app.route ('/')
 def index():
-    return render_template('index.html')
+    posts= Post.query.all()
+    return render_template('index.html',posts=posts)
 
 
 @app.route('/register',methods=["GET","POST"])
@@ -61,4 +62,29 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.route('/posts/<int:post_id>')
+def post_info(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('posts.html', post = post)
+
+@app.route('/posts/<int:post_id>', methods=["GET", "POST"])
+@login_required
+def edit_post(post_id):
+    if not current_user.is_admin:
+        flash("Sorry! You can't edit this one!!", "warning")
+        return redirect(url_for('index'))
+    post = Post.query.get_or_404(post_id)
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        body = form.body.data
+        post.title = title
+        post.body = body
+        post.save()
+        flash(f"{post.title} has been updated", "primary")
+        return redirect(url_for('posts.html', post_id=post.id))
+
+    return render_template('posts.html', post = post, form=form)
+
 
