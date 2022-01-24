@@ -19,14 +19,14 @@ class User(db.Model, UserMixin):
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     is_admin = db.Column(db.Boolean, default=False)
 
+    def __repr__(self):
+        return f"User ({self.username},{self.email})"
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.password = generate_password_hash(kwargs['password'])
         db.session.add(self)
         db.session.commit()
-
-    def __repr__(self):
-        return f"<User|{self.username}>"
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
