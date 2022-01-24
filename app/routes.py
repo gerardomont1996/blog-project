@@ -19,7 +19,8 @@ def register():
         username=form.username.data
         email=form.username.data
         password=form.password.data
-
+        
+        
         user_exists = User.query.filter((User.username == username)|(User.email == email)).all()
 
         if user_exists:
@@ -37,26 +38,17 @@ def register():
 def login():
     form = LoginForm()
    
-    if form.validate_on_submit():
-        
+    if form.validate_on_submit(): 
         username = form.username.data
         password = form.password.data
-       
         user = User.query.filter_by(username=username).first()
-        
-        
         if not user or not user.check_password(password):
-            
             flash('That username and/or password is incorrect', 'danger')
             return redirect(url_for('login'))
-        
-
         login_user(user)
         flash('You have succesfully logged in', 'success')
         return redirect(url_for('index'))
-
     return render_template('login.html', form=form)
-
 
 @app.route('/logout')
 def logout():
